@@ -27,3 +27,7 @@ automating
 
 ## 와 됐네;; ^,^;
          
+
+![image](https://user-images.githubusercontent.com/54103240/119636059-3f61cd00-be4f-11eb-80f6-3a9afdad0acd.png)
+
+### 거의 알고리즘~ ^9^
