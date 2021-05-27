@@ -17,13 +17,13 @@ public class Excel {
         ArrayList<exData> list = new ArrayList<exData>();
 
         try {
-            FileInputStream file = new FileInputStream("C:/Users/CICS/OneDrive/바탕 화면/성남엑셀매크로/test/directory/물증_directory/물증_read.xlsx");
+            FileInputStream file = new FileInputStream("C:/Users/CICS/OneDrive/바탕 화면/연구원/성남엑셀매크로/test/directory/test_directory/test_read.xlsx");
             XSSFWorkbook workbook = new XSSFWorkbook(file);
 
             int rowindex=0;
             int columnindex=0;
 
-            //시트 수 (첫번째에만 존재하므로 0을 준다)
+            // 시트 수 (첫번째에만 존재하므로 0을 준다)
             // 만약 여러 시트를 읽기위해서는 FOR문을 한번더 돌려준다
             XSSFSheet sheet=workbook.getSheetAt(0);
 
@@ -51,9 +51,8 @@ public class Excel {
                         XSSFCell cell=row.getCell(columnindex);
                         String value="";
 
-                        // 생활사는 주소 포함
-                        //if(columnindex == 3 || columnindex == 4 || columnindex == 9 || columnindex == 10){
-                        if(columnindex == 3 || columnindex == 4 || columnindex == 9){
+
+                        if(columnindex == 3 || columnindex == 4 || columnindex == 9 || columnindex == 10){
                             //셀이 빈값일경우를 위한 널체크
                             if(cell == null){
                                 continue; }
@@ -91,10 +90,8 @@ public class Excel {
                                 ed.setTitle(value);
                             else if(columnindex == 9)
                                 ed.setContents(value);
-
-                            // 생활사-주소
-                            //else if(columnindex == 10)
-                            //    ed.setAddress(value);
+                            else if(columnindex == 10)
+                                ed.setAddress(value);
                             System.out.println(value);
                             }
                         }
@@ -112,7 +109,7 @@ public class Excel {
     public void writeExcel(ArrayList<exData> list) {
         try{
             // 엑셀 파일 열기
-            FileOutputStream file = new FileOutputStream("C:/Users/CICS/OneDrive/바탕 화면/성남엑셀매크로/test/directory/물증_directory/물증_write.xlsx");
+            FileOutputStream file = new FileOutputStream("C:/Users/CICS/OneDrive/바탕 화면/연구원/성남엑셀매크로/test/directory/test_directory/test_write.xlsx");
             XSSFWorkbook xworkbook = new XSSFWorkbook();
 
             // 시트 생성
@@ -190,26 +187,26 @@ public class Excel {
                     cell.setCellValue(list.get(list_cnt + 1).getContents());
                     cell.setCellStyle(style_Contents);
 
-                    curRow.setHeight((short) 1700);
+                    curRow.setHeight((short) 1420);
                 }
                 else if(cur_row % 4 == 2){
                     cell = curRow.createCell(0);
                     cell.setCellStyle(style_Data_num);
                     cell.setCellValue(list.get(list_cnt).getData_num());
 
-                    // 생활사 - 주소
-                    //cell = curRow.createCell(1);
-                    //cell.setCellStyle(style_Address);
+                    cell = curRow.createCell(1);
+                    cell.setCellStyle(style_Address);
                     //cell.setCellValue(list.get(list_cnt).getAddress());
+                    cell.setCellValue("");
 
                     cell = curRow.createCell(3);
                     cell.setCellStyle(style_Data_num);
                     cell.setCellValue(list.get(list_cnt + 1).getData_num());
 
-                    // 생활사 - 주소
-                    //cell = curRow.createCell(4);
-                    //cell.setCellStyle(style_Address);
+                    cell = curRow.createCell(4);
+                    cell.setCellStyle(style_Address);
                     //cell.setCellValue(list.get(list_cnt + 1).getAddress());
+                    cell.setCellValue("");
 
                     list_cnt+=2;
                 }
@@ -224,14 +221,14 @@ public class Excel {
                 InputStream inputStream = null;
 
                 try{
-                    inputStream = new FileInputStream("C:/Users/CICS/OneDrive/바탕 화면/성남엑셀매크로/test/directory/물증_directory/물증_rename/"+img_list+".jpg");
+                    inputStream = new FileInputStream("C:/Users/CICS/OneDrive/바탕 화면/연구원/성남엑셀매크로/test/directory/test_directory/test_read.files/"+img_list+".png");
 
                     //InputStream의 내용을 byte []로 가져옴
                     byte[] bytes = IOUtils.toByteArray(inputStream);
 
                     //통합 문서에 그림을 추가
                     //여기서 오류날 수 있대
-                    int pictureIdx = xworkbook.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+                    int pictureIdx = xworkbook.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
 
                     //입력 스트림 닫기
                     inputStream.close();
@@ -250,12 +247,10 @@ public class Excel {
                     {
                         if(img_list % 2 == 0)
                         {
-
-
                             anchor.setDx1(0);
-                            anchor.setDx2(4200);
+                            anchor.setDx2(5366);
                             anchor.setDy1(0);
-                            anchor.setDy2(1700);
+                            anchor.setDy2(1420);
 
                             //왼쪽 위 셀 _and_ 오른쪽 아래 셀이있는 앵커 만들기
                             anchor.setCol1(3); //Column A
@@ -277,11 +272,10 @@ public class Excel {
                         else if(img_list % 2 == 1)
                         {
 
-
                             anchor.setDx1(0);
-                            anchor.setDx2(4200);
+                            anchor.setDx2(5366);
                             anchor.setDy1(0);
-                            anchor.setDy2(1700);
+                            anchor.setDy2(1420);
 
 
                             //왼쪽 위 셀 _and_ 오른쪽 아래 셀이있는 앵커 만들기
@@ -315,23 +309,21 @@ public class Excel {
                 }
             }
 
-
             
             //열 너비 설정
             for(int j=0;j<5;j++) {
                 if(j == 2) {
                     xsheet.autoSizeColumn(j);
-                    xsheet.setColumnWidth(j, (short) 500);
+                    xsheet.setColumnWidth(j, (short) 840);
                 }
                 else if(j == 0 || j == 3){
                     xsheet.autoSizeColumn(j);
-                    xsheet.setColumnWidth(j,(short) 4200);
+                    xsheet.setColumnWidth(j,(short) 5366);
                 }
                 else if(j == 1 || j ==4){
                     xsheet.autoSizeColumn(j);
-                    xsheet.setColumnWidth(j,(short) 5000);
+                    xsheet.setColumnWidth(j,(short) 4500);
                 }
-
             }
 
             // 이미지 넣을 셀 병합 (1번 3번)
