@@ -113,7 +113,7 @@ public class Excel {
             XSSFWorkbook xworkbook = new XSSFWorkbook();
 
             // 시트 생성
-            XSSFSheet xsheet = xworkbook.createSheet("정리");
+            XSSFSheet xsheet = xworkbook.createSheet("정_리");
             XSSFRow curRow;
 
             // 리스트 크기
@@ -141,10 +141,12 @@ public class Excel {
             // title 셀 서식
             CellStyle style_Title = xworkbook.createCellStyle();
             Font font_title = xworkbook.createFont();
-            font_title.setFontHeightInPoints((short) 7.5);
+            font_title.setFontHeightInPoints((short) 7.8);
+            font_title.setBoldweight(Font.BOLDWEIGHT_BOLD);
             style_Title.setWrapText(true);
             style_Title.setFont(font_title);
-            style_Title.setAlignment(CellStyle.ALIGN_CENTER); // 가운데 정렬
+            style_Title.setAlignment(CellStyle.ALIGN_LEFT); // 가운데 정렬
+            style_Title.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 
             // Contents 셀 서식
             CellStyle style_Contents = xworkbook.createCellStyle();
@@ -158,7 +160,7 @@ public class Excel {
             // Address 셀 서식
             CellStyle style_Address = xworkbook.createCellStyle();
             Font font_address = xworkbook.createFont();
-            font_address.setFontHeightInPoints((short) 7.5);
+            font_address.setFontHeightInPoints((short) 7);
             style_Address.setWrapText(true);
             style_Address.setFont(font_address);
             style_Address.setAlignment(CellStyle.ALIGN_CENTER); // 가운데 정렬
@@ -170,43 +172,44 @@ public class Excel {
                 curRow = xsheet.createRow(cur_row);
                 if(cur_row % 4 == 0){
                     // title 셀
-                    cell = curRow.createCell(1);
+                    cell = curRow.createCell(2);
                     cell.setCellStyle(style_Title);
                     cell.setCellValue(list.get(list_cnt).getTitle());
                     // title 셀
-                    cell = curRow.createCell(4);
+                    cell = curRow.createCell(6);
                     cell.setCellStyle(style_Title);
                     cell.setCellValue(list.get(list_cnt+1).getTitle());
                 }
                 else if(cur_row % 4 == 1){
-                    cell = curRow.createCell(1);
+                    cell = curRow.createCell(2);
                     cell.setCellValue(list.get(list_cnt).getContents());
                     cell.setCellStyle(style_Contents);
 
-                    cell = curRow.createCell(4);
+                    cell = curRow.createCell(6);
                     cell.setCellValue(list.get(list_cnt + 1).getContents());
                     cell.setCellStyle(style_Contents);
 
-                    curRow.setHeight((short) 1420);
+                    curRow.setHeight((short) 1410);
                 }
                 else if(cur_row % 4 == 2){
                     cell = curRow.createCell(0);
                     cell.setCellStyle(style_Data_num);
                     cell.setCellValue(list.get(list_cnt).getData_num());
 
-                    cell = curRow.createCell(1);
-                    cell.setCellStyle(style_Address);
-                    //cell.setCellValue(list.get(list_cnt).getAddress());
-                    cell.setCellValue("");
 
-                    cell = curRow.createCell(3);
+                    cell = curRow.createCell(2);
+                    cell.setCellStyle(style_Address);
+                    cell.setCellValue(list.get(list_cnt).getAddress());
+                    //cell.setCellValue("");
+
+                    cell = curRow.createCell(4);
                     cell.setCellStyle(style_Data_num);
                     cell.setCellValue(list.get(list_cnt + 1).getData_num());
 
-                    cell = curRow.createCell(4);
+                    cell = curRow.createCell(6);
                     cell.setCellStyle(style_Address);
-                    //cell.setCellValue(list.get(list_cnt + 1).getAddress());
-                    cell.setCellValue("");
+                    cell.setCellValue(list.get(list_cnt + 1).getAddress());
+                    //cell.setCellValue("");
 
                     list_cnt+=2;
                 }
@@ -241,21 +244,21 @@ public class Excel {
 
                     //워크 시트에 첨부 된 앵커 만들기
                     ClientAnchor anchor = helper.createClientAnchor();
-                    anchor.setAnchorType( ClientAnchor.MOVE_AND_RESIZE );
+                    anchor.setAnchorType( ClientAnchor.MOVE_AND_RESIZE);
 
                     if(list.get(img_list-1).getNum() == img_list)
                     {
                         if(img_list % 2 == 0)
                         {
                             anchor.setDx1(0);
-                            anchor.setDx2(5366);
+                            anchor.setDx2(5190);
                             anchor.setDy1(0);
-                            anchor.setDy2(1420);
+                            anchor.setDy2(1390);
 
                             //왼쪽 위 셀 _and_ 오른쪽 아래 셀이있는 앵커 만들기
-                            anchor.setCol1(3); //Column A
+                            anchor.setCol1(4); //Column A
                             anchor.setRow1(cur_num); //Row 0
-                            anchor.setCol2(4); //Column A
+                            anchor.setCol2(5); //Column A
                             anchor.setRow2(cur_num+2); //Row 1
 
                             //그림을 만듬
@@ -273,9 +276,9 @@ public class Excel {
                         {
 
                             anchor.setDx1(0);
-                            anchor.setDx2(5366);
+                            anchor.setDx2(5190);
                             anchor.setDy1(0);
-                            anchor.setDy2(1420);
+                            anchor.setDy2(1390);
 
 
                             //왼쪽 위 셀 _and_ 오른쪽 아래 셀이있는 앵커 만들기
@@ -311,20 +314,25 @@ public class Excel {
 
             
             //열 너비 설정
-            for(int j=0;j<5;j++) {
-                if(j == 2) {
+            for(int j=0;j<7;j++) {
+                if(j == 0 || j == 4){
                     xsheet.autoSizeColumn(j);
-                    xsheet.setColumnWidth(j, (short) 840);
+                    xsheet.setColumnWidth(j,(short) 5190);
                 }
-                else if(j == 0 || j == 3){
+                else if(j == 1 || j ==5){
                     xsheet.autoSizeColumn(j);
-                    xsheet.setColumnWidth(j,(short) 5366);
+                    xsheet.setColumnWidth(j, (short) 380);
                 }
-                else if(j == 1 || j ==4){
+                else if(j == 2 || j == 6){
                     xsheet.autoSizeColumn(j);
-                    xsheet.setColumnWidth(j,(short) 4500);
+                    xsheet.setColumnWidth(j, (short) 4450);
+                }
+                else if(j == 3){
+                    xsheet.autoSizeColumn(j);
+                    xsheet.setColumnWidth(j, (short) 560);
                 }
             }
+
 
             // 이미지 넣을 셀 병합 (1번 3번)
             for(int i=0;i<row*4/2;i+=4){
@@ -341,6 +349,7 @@ public class Excel {
                         3
                 ));
             }
+
 
             xworkbook.write(file);
             file.close();
